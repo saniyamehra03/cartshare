@@ -2,7 +2,7 @@ const mobileInput = document.getElementById("mobile");
 const joinBtn = document.getElementById("joinBtn");
 
 joinBtn.addEventListener("click", function(){
-
+    console.log("Button Clicked");
     const mobileNumber = mobileInput.value.trim();
     if(mobileNumber === "")
     {
