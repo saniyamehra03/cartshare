@@ -18,4 +18,8 @@ joinBtn.addEventListener("click", function(){
     }
 
     alert("Login Successful!");
+    localStorage.setItem("mobileNumber", mobileNumber);
+    alert(localStorage.getItem("mobileNumber"));
+    console.log("Redirecting...");
+    window.location.href = "cart.html";
 });
