@@ -17,6 +17,44 @@
                 <p>Welcome,
                     <span id="userMobile"></span>
                 </p>
+                <form>
+                    <div class="mb-3"> 
+                        <label for="product" class="form-label">
+                            Product
+                        </label>
+                        <input 
+                        type="text" 
+                        class="form-control" 
+                        id="product" 
+                        placeholder="Enter product name">
+
+                        <label for="quantity" class="form-label">
+                            Quantity
+                        </label>
+                        <input
+                        type="number"
+                        class="form-control"
+                        id="quantity"
+                        placeholder="Enter quantity"
+                        min="1"
+                        >
+                        <label for="price" class="form-label">
+                            Price
+                        </label>
+                        <input
+                        type="number"
+                        class="form-control"
+                        id="price"
+                        placeholder="Enter price"
+                        min="0"
+                        step="0.01"
+                        >
+                        <button type="button" 
+                        id="addProductBtn"
+                        class="btn btn-success mt-3">
+                        Add Product</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -32,5 +70,6 @@
         window.location.href = "index.html";
     }
 </script>
+<script src="js/cart.js"></script>
 </body>
 </html>
