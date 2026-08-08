@@ -4,6 +4,7 @@ const priceInput = document.getElementById("price");
 const addProductBtn = document.getElementById("addProductBtn");
 const productList = document.getElementById("productList");
 console.log(addProductBtn);
+let editingRow = null;
  
 addProductBtn.addEventListener("click" , function() 
 {
@@ -28,7 +29,22 @@ addProductBtn.addEventListener("click" , function()
     console.log(product);
     console.log(quantity);
     console.log(price);
+ 
 
+if(editingRow){
+    editingRow.cells[0].textContent = product;
+    editingRow.cells[1].textContent = quantity;
+    editingRow.cells[2].textContent = price;
+
+    editingRow = null;
+    
+    addProductBtn.textContent ="Add Product";
+     productInput.value ="";
+     quantityInput.value ="";
+     priceInput.value ="";
+     return;
+
+}
 const row = document.createElement("tr");
 
 const productCell = document.createElement("td");
@@ -49,10 +65,23 @@ const deleteBtn = document.createElement("button");
 deleteBtn.textContent = "Delete";
 deleteBtn.className = "btn btn-danger";
 
+const editBtn = document.createElement("button");
+editBtn.textContent = "Edit";
+editBtn.className ="btn btn-primary me-2";
+
+editBtn.addEventListener("click", function(){
+    productInput.value = product;
+    quantityInput.value = quantity;
+    priceInput.value = price;
+
+    addProductBtn.textContent = "Update Product";
+     editingRow = row;
+})
+
 deleteBtn.addEventListener("click", function() {
     row.remove();
 });
 actionCell.appendChild(deleteBtn);
-
+actionCell.appendChild(editBtn);
 productList.appendChild(row);
 });
