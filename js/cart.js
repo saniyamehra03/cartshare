@@ -6,7 +6,57 @@ const productList = document.getElementById("productList");
 const mobile = localStorage.getItem("mobileNumber");  
 console.log(addProductBtn);
 let editingRow = null;
- 
+let cardProducts = [];
+
+const savedProducts = localStorage.getItem("cardProducts");
+if(savedProducts){
+    cardProducts = JSON.parse(savedProducts);
+}
+function renderProducts() {
+    productList.innerHTML = "";
+    cardProducts.forEach(function(productData){
+
+        const row = document.createElement("tr");
+        const productCell = document.createElement("td");
+        const quantityCell = document.createElement("td");
+        const priceCell = document.createElement("td");
+        const totalCell = document.createElement("td");
+        const addedByCell = document.createElement("td");
+        const actionCell = document.createElement("td");
+
+        productCell.textContent = productData.product;
+        quantityCell.textContent = productData.quantity;
+        priceCell.textContent = productData.price;
+        totalCell.textContent = productData.total;
+        addedByCell.textContent = productData.addedBy;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "btn btn-danger";
+        
+        deleteBtn.addEventListener("click", function() {
+
+            const index = cartProducts.indexOf(productData);
+            cartProducts.splice(index,1);
+            
+            localStorage.setItem
+            ("cardProducts", 
+             JSON.stringify(cartProducts));
+            renderProducts();
+    });
+
+    actionCell.appendChild(deleteBtn);
+    row.appendChild(productCell);
+    row.appendChild(quantityCell);
+    row.appendChild(priceCell);
+    row.appendChild(totalCell);
+    row.appendChild(addedByCell);
+    row.appendChild(actionCell);
+
+    productList.appendChild(row);
+    });
+}
+
 addProductBtn.addEventListener("click" , function() 
 {
 
@@ -41,7 +91,16 @@ addProductBtn.addEventListener("click" , function()
     console.log(product);
     console.log(quantity);
     console.log(price);
- 
+   
+    const productData = {
+        product: product,
+        quantity: quantity,
+        price: price,
+        total: total,
+        addedBy: addedBy
+    };
+    cardProducts.push(productData);
+    localStorage.setItem("cardProducts" ,JSON.stringify(cardProducts));
 
 if(editingRow){
     editingRow.cells[0].textContent = product;
