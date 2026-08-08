@@ -45,5 +45,14 @@ row.appendChild(quantityCell);
 row.appendChild(priceCell);
 row.appendChild(actionCell);
 
+const deleteBtn = document.createElement("button");
+deleteBtn.textContent = "Delete";
+deleteBtn.className = "btn btn-danger";
+
+deleteBtn.addEventListener("click", function() {
+    row.remove();
+});
+actionCell.appendChild(deleteBtn);
+
 productList.appendChild(row);
 });
