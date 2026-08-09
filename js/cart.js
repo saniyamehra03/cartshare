@@ -4,7 +4,7 @@ const priceInput = document.getElementById("price");
 const addProductBtn = document.getElementById("addProductBtn");
 const productList = document.getElementById("productList");
 const mobile = localStorage.getItem("mobileNumber");  
-
+const printBtn = document.getElementById("printBtn");
 const notification = document.getElementById("notification");
 function showNotification(message, type) {
     notification.textContent = message;
@@ -159,5 +159,9 @@ if(editingProduct){
     productInput.value = "";
     quantityInput.value = "";
     priceInput.value = "";
+
+    printBtn.addEventListener("click" , function(){
+        window.print();
+    });
 
 });
