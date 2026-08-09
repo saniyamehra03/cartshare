@@ -6,8 +6,12 @@ const productList = document.getElementById("productList");
 const mobile = localStorage.getItem("mobileNumber");  
 const printBtn = document.getElementById("printBtn");
 const notification = document.getElementById("notification");
+const grandTotal = document.getElementById("grandTotal");
 const roomCode = localStorage.getItem("roomCode");
 console.log("Current Room:", roomCode);
+const roomInfo = document.getElementById("roomInfo");
+roomInfo.textContent = "Room Code: " + roomCode;
+
 
 const activityLog = document.getElementById("activityLog");
 function addActivity(message){
@@ -109,6 +113,7 @@ function renderProducts() {
            }
     });
 
+     
         const editBtn = document.createElement("button")
 
          editBtn.textContent="Edit"
@@ -137,6 +142,14 @@ function renderProducts() {
 
     productList.appendChild(row);
     });
+
+let totalAmount = 0;
+
+cardProducts.forEach(function(productData) {
+    totalAmount += Number(productData.total);
+});
+
+grandTotal.textContent = "Grand Total: ₹" + totalAmount.toFixed(2);
 }
 renderProducts();
 renderActivityLog();
@@ -220,9 +233,10 @@ if(editingProduct){
 window.addEventListener("storage" ,function (event) {
     if(event.key === cartStorageKey){
 
-        const UpdatedProducts = localStorage.getItem(cartStorageKey);   
+        const UpdatedProducts = localStorage.getItem(cartStorageKey); 
+
         if(UpdatedProducts){
-         cardProducts = JSON.parse(updatedProducts);
+         cardProducts = JSON.parse(UpdatedProducts);
         }
         else
         { 
@@ -233,5 +247,13 @@ window.addEventListener("storage" ,function (event) {
             "Cart updated by another participant!",
             "info"
          );
+    }
+    
+    if(event.key===activityStorageKey){
+        renderActivityLog();
+        showNotification(
+            "Activity Log updated!",
+            "info"
+        );
     }
 });
