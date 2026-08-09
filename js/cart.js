@@ -9,8 +9,45 @@ const notification = document.getElementById("notification");
 const roomCode = localStorage.getItem("roomCode");
 console.log("Current Room:", roomCode);
 
+const activityLog = document.getElementById("activityLog");
+function addActivity(message){
+    const savedActivities = localStorage.getItem(activityStorageKey);
+
+    let activities = [];
+    if (savedActivities) {
+        activities = JSON.parse(savedActivities);
+    }
+
+    activities.push(message);
+    localStorage.setItem(
+        activityStorageKey,
+        JSON.stringify(activities)
+    );
+
+    renderActivityLog();
+}
+function renderActivityLog(){
+    activityLog.innerHTML="";
+    const savedActivities = localStorage.getItem(activityStorageKey);
+     if (!savedActivities) {
+        return;
+    }
+
+    const activities = JSON.parse(savedActivities);
+
+    activities.forEach(function(message) {
+
+        const li = document.createElement("li");
+
+        li.className = "list-group-item";
+        li.textContent = message;
+
+        activityLog.appendChild(li);
+    });
+}
 const cartStorageKey = "cardProducts_" + roomCode;
 console.log("Cart Storage Key:", cartStorageKey);
+const activityStorageKey = "activityLog_" + roomCode;
 
 function showNotification(message, type) {
     notification.textContent = message;
@@ -65,9 +102,13 @@ function renderProducts() {
             cardProducts.splice(index,1);
              saveProducts();
              renderProducts();
+
+             addActivity(mobile + " deleted " + productData.product);
+
              showNotification("Product deleted successfully!", "danger");
            }
     });
+
         const editBtn = document.createElement("button")
 
          editBtn.textContent="Edit"
@@ -98,7 +139,7 @@ function renderProducts() {
     });
 }
 renderProducts();
-
+renderActivityLog();
 addProductBtn.addEventListener("click" , function() 
 {
 
@@ -137,8 +178,10 @@ if(editingProduct){
         editingProduct.total = total;
 
         saveProducts();
-        editingProduct = null;
 
+        addActivity(mobile + " updated " + product)
+        editingProduct = null;
+      
      addProductBtn.textContent ="Add Product";
      productInput.value ="";
      quantityInput.value ="";
@@ -160,6 +203,8 @@ if(editingProduct){
     cardProducts.push(productData);
     saveProducts();
     renderProducts();
+
+    addActivity(mobile + " added " + product);
 
     showNotification("Product added successfully!", "success");
 
