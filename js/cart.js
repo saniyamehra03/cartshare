@@ -4,12 +4,20 @@ const priceInput = document.getElementById("price");
 const addProductBtn = document.getElementById("addProductBtn");
 const productList = document.getElementById("productList");
 const mobile = localStorage.getItem("mobileNumber");  
-// console.log(addProductBtn);
+
+const notification = document.getElementById("notification");
+function showNotification(message, type) {
+    notification.textContent = message;
+    notification.className="alert alert-"+ type;
+
+    setTimeout(function() {
+        notification.classList.add("d-none");
+    },3000);
+}
 let editingProduct = null;
 let cardProducts = [];
 
 const savedProducts = localStorage.getItem("cardProducts");
-
 if(savedProducts){
     cardProducts = JSON.parse(savedProducts);
 }
@@ -49,6 +57,7 @@ function renderProducts() {
            if(index !==-1){
             cardProducts.splice(index,1);
              saveProducts();
+             showNotification("Product deleted successfully!", "danger");
              renderProducts();
            }
     });
@@ -129,6 +138,7 @@ if(editingProduct){
      priceInput.value ="";
        
      renderProducts();
+     showNotification("Product updated successfully!", "success");
      return;
 }
 
@@ -144,6 +154,7 @@ if(editingProduct){
     saveProducts();
     renderProducts();
 
+    showNotification("Product added successfully!", "success");
 
     productInput.value = "";
     quantityInput.value = "";

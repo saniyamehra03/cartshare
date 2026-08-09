@@ -7,6 +7,18 @@
     <title>Cart Sharing App</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">   
+    <style>
+    #notification {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        min-width: 300px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+</style>
 </head>
 <body>
 <section>
@@ -49,12 +61,13 @@
                         min="0"
                         step="0.01"
                         >
-                        <button type="button" 
+                        <button type="button"  
                         id="addProductBtn"
                         class="btn btn-success mt-3">
                         Add Product</button>
                     </div>
-                </form>
+                </form> 
+                <div id="notification" class="alert d-none" role="alert"></div>
 
                 <table class="table table-bordered mt-4">
                     <thead>
