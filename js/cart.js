@@ -4,14 +4,23 @@ const priceInput = document.getElementById("price");
 const addProductBtn = document.getElementById("addProductBtn");
 const productList = document.getElementById("productList");
 const mobile = localStorage.getItem("mobileNumber");  
-console.log(addProductBtn);
-let editingRow = null;
+// console.log(addProductBtn);
+let editingProduct = null;
 let cardProducts = [];
 
 const savedProducts = localStorage.getItem("cardProducts");
+
 if(savedProducts){
     cardProducts = JSON.parse(savedProducts);
 }
+
+function saveProducts(){
+    localStorage.setItem(
+        "cardProducts",
+        JSON.stringify(cardProducts)
+    );
+}
+
 function renderProducts() {
     productList.innerHTML = "";
     cardProducts.forEach(function(productData){
@@ -36,16 +45,32 @@ function renderProducts() {
         
         deleteBtn.addEventListener("click", function() {
 
-            const index = cartProducts.indexOf(productData);
-            cartProducts.splice(index,1);
+        const index = cardProducts.indexOf(productData);
+           if(index !==-1){
+            cardProducts.splice(index,1);
+             saveProducts();
+             renderProducts();
+           }
+    });
+        const editBtn = document.createElement("button")
+
+         editBtn.textContent="Edit"
+         editBtn.className="btn btn-primary me-2"
+           
+            editBtn.addEventListener("click" , function(){
+                productInput.value = productData.product;
+                quantityInput.value = productData.quantity;
+                priceInput.value = productData.price;
             
-            localStorage.setItem
-            ("cardProducts", 
-             JSON.stringify(cartProducts));
-            renderProducts();
+            editingProduct = productData;
+        
+            addProductBtn.textContent = "Update Product"
+        
     });
 
     actionCell.appendChild(deleteBtn);
+    actionCell.appendChild(editBtn);
+
     row.appendChild(productCell);
     row.appendChild(quantityCell);
     row.appendChild(priceCell);
@@ -56,6 +81,7 @@ function renderProducts() {
     productList.appendChild(row);
     });
 }
+renderProducts();
 
 addProductBtn.addEventListener("click" , function() 
 {
@@ -76,91 +102,51 @@ addProductBtn.addEventListener("click" , function()
         alert("Please enter the price.");
         return;
     }
+    
     const total = quantity * price;
     if (isNaN(total)) {
         alert("Please enter valid numbers for quantity and price.");
         return;
     }
 
-    const addedBy = mobile; 
-    if (!addedBy) {
-        alert("User information not found. Please log in.");
+    if(!mobile){
+        alert("Please login first.");
         return;
     }
 
-    console.log(product);
-    console.log(quantity);
-    console.log(price);
-   
+if(editingProduct){
+        editingProduct.product = product;
+        editingProduct.quantity = quantity;
+        editingProduct.price = price;
+        editingProduct.total = total;
+
+        saveProducts();
+        editingProduct = null;
+
+     addProductBtn.textContent ="Add Product";
+     productInput.value ="";
+     quantityInput.value ="";
+     priceInput.value ="";
+       
+     renderProducts();
+     return;
+}
+
     const productData = {
         product: product,
         quantity: quantity,
         price: price,
         total: total,
-        addedBy: addedBy
+        addedBy: mobile
     };
+
     cardProducts.push(productData);
-    localStorage.setItem("cardProducts" ,JSON.stringify(cardProducts));
+    saveProducts();
+    renderProducts();
 
-if(editingRow){
-    editingRow.cells[0].textContent = product;
-    editingRow.cells[1].textContent = quantity;
-    editingRow.cells[2].textContent = price;
-    editingRow.cells[3].textContent = total;
 
-    editingRow = null;
+    productInput.value = "";
+    quantityInput.value = "";
+    priceInput.value = "";
 
-    addProductBtn.textContent ="Add Product";
-     productInput.value ="";
-     quantityInput.value ="";
-     priceInput.value ="";
-
-     return;
-
-}
-const row = document.createElement("tr");
-
-const productCell = document.createElement("td");
-const quantityCell = document.createElement("td");
-const priceCell = document.createElement("td");
-const totalCell = document.createElement("td");
-const addedByCell = document.createElement("td");
-const actionCell = document.createElement("td");
-
-productCell.textContent = product;
-quantityCell.textContent = quantity;
-priceCell.textContent = price;
-totalCell.textContent = total;
-addedByCell.textContent = mobile;
-
-row.appendChild(productCell);
-row.appendChild(quantityCell);
-row.appendChild(priceCell);
-row.appendChild(totalCell);
-row.appendChild(addedByCell);
-row.appendChild(actionCell);
-
-const deleteBtn = document.createElement("button");
-deleteBtn.textContent = "Delete";
-deleteBtn.className = "btn btn-danger";
-
-const editBtn = document.createElement("button");
-editBtn.textContent = "Edit";
-editBtn.className ="btn btn-primary me-2";
-
-editBtn.addEventListener("click", function(){
-    productInput.value = product;
-    quantityInput.value = quantity;
-    priceInput.value = price;
-
-    addProductBtn.textContent = "Update Product";
-     editingRow = row;
-})
-
-deleteBtn.addEventListener("click", function() {
-    row.remove();
-});
-actionCell.appendChild(deleteBtn);
-actionCell.appendChild(editBtn);
-productList.appendChild(row);
 });
