@@ -1,4 +1,4 @@
-const productInput = document.getElementById("product");
+const productInput = document.getElementById("product");    
 const quantityInput = document.getElementById("quantity");
 const priceInput = document.getElementById("price");
 const addProductBtn = document.getElementById("addProductBtn");
@@ -6,6 +6,12 @@ const productList = document.getElementById("productList");
 const mobile = localStorage.getItem("mobileNumber");  
 const printBtn = document.getElementById("printBtn");
 const notification = document.getElementById("notification");
+const roomCode = localStorage.getItem("roomCode");
+console.log("Current Room:", roomCode);
+
+const cartStorageKey = "cardProducts_" + roomCode;
+console.log("Cart Storage Key:", cartStorageKey);
+
 function showNotification(message, type) {
     notification.textContent = message;
     notification.className="alert alert-"+ type;
@@ -17,14 +23,14 @@ function showNotification(message, type) {
 let editingProduct = null;
 let cardProducts = [];
 
-const savedProducts = localStorage.getItem("cardProducts");
+const savedProducts = localStorage.getItem(cartStorageKey);
 if(savedProducts){
     cardProducts = JSON.parse(savedProducts);
 }
 
 function saveProducts(){
     localStorage.setItem(
-        "cardProducts",
+        cartStorageKey,
         JSON.stringify(cardProducts)
     );
 }
@@ -40,6 +46,7 @@ function renderProducts() {
         const totalCell = document.createElement("td");
         const addedByCell = document.createElement("td");
         const actionCell = document.createElement("td");
+        actionCell.className="action-cell";
 
         productCell.textContent = productData.product;
         quantityCell.textContent = productData.quantity;
@@ -160,8 +167,26 @@ if(editingProduct){
     quantityInput.value = "";
     priceInput.value = "";
 
-    printBtn.addEventListener("click" , function(){
+});
+ printBtn.addEventListener("click" , function(){
         window.print();
     });
 
+window.addEventListener("storage" ,function (event) {
+    if(event.key === cartStorageKey){
+
+        const UpdatedProducts = localStorage.getItem(cartStorageKey);   
+        if(UpdatedProducts){
+         cardProducts = JSON.parse(updatedProducts);
+        }
+        else
+        { 
+            cardProducts = [];
+        }
+         renderProducts();
+         showNotification(
+            "Cart updated by another participant!",
+            "info"
+         );
+    }
 });

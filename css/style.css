@@ -151,3 +151,21 @@
         flex-wrap: wrap;
     }
 }
+@media print {
+
+    .product-form {
+        display: none !important;
+    }
+
+    #notification {
+        display: none !important;
+    }
+
+    #printBtn {
+        display: none !important;
+    }
+    .action-cell {
+        display: none !important;
+    }
+
+}
