@@ -57,8 +57,8 @@ function renderProducts() {
            if(index !==-1){
             cardProducts.splice(index,1);
              saveProducts();
-             showNotification("Product deleted successfully!", "danger");
              renderProducts();
+             showNotification("Product deleted successfully!", "danger");
            }
     });
         const editBtn = document.createElement("button")

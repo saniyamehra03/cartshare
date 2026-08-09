@@ -7,18 +7,6 @@
     <title>Cart Sharing App</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">   
-    <style>
-    #notification {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9999;
-        min-width: 300px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    }
-</style>
 </head>
 <body>
 <section>
@@ -30,19 +18,25 @@
                     <span id="userMobile"></span>
                 </p>
                 <form>
-                    <div class="mb-3"> 
+                    <div class="product-form">
+
+                        <div class="form-field">
                         <label for="product" class="form-label">
                             Product
                         </label>
+
                         <input 
                         type="text" 
                         class="form-control" 
                         id="product" 
                         placeholder="Enter product name">
-
+                        </div>
+                        
+                        <div class="form-field">
                         <label for="quantity" class="form-label">
                             Quantity
                         </label>
+
                         <input
                         type="number"
                         class="form-control"
@@ -50,6 +44,9 @@
                         placeholder="Enter quantity"
                         min="1"
                         >
+                        </div>
+
+                         <div class="form-field">
                         <label for="price" class="form-label">
                             Price
                         </label>
@@ -61,15 +58,22 @@
                         min="0"
                         step="0.01"
                         >
+                        </div>
+
+                        <div class="form-button">
                         <button type="button"  
                         id="addProductBtn"
                         class="btn btn-success mt-3">
                         Add Product</button>
+                        </div>
+
                     </div>
                 </form> 
-                <div id="notification" class="alert d-none" role="alert"></div>
 
-                <table class="table table-bordered mt-4">
+                <div id="notification" class="alert d-none" role="alert"></div>
+             
+                <div class="card-table-wrapper">
+                 <table class="table table-bordered mt-4">
                     <thead>
                         <tr>
                             <th>Product</th>
@@ -81,10 +85,10 @@
                         </tr>
                     </thead>
 
-                    <tbody id="productList">
+                    <tbody id="productList"></tbody>
+                 </table>
+               </div>
 
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>
